@@ -1,2 +1,2 @@
-# clickbait
-tags misleading videos in youtube
+# Clickbait
+Chrome extension to tag misleading videos in YouTube
