@@ -1,7 +1,7 @@
 function newTagElement() {
   const elm = document.createElement("span");
   elm.classList.add("clickbait");
-  elm.textContent = "Clickbait";
+  elm.textContent = "Clickbait-";
   return elm;
 }
 
