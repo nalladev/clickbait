@@ -1,13 +1,13 @@
 function newTagElement() {
   const elm = document.createElement("span");
   elm.classList.add("clickbait");
-  elm.textContent = "Clickbait-";
+  elm.textContent = "Clickbait";
   return elm;
 }
 
 const reportButton = document.createElement("button");
 reportButton.classList.add("clickbait-btn");
-reportButton.textContent = "CB";
+reportButton.textContent = "Report";
 
 function checkClickbait(videoId) {
   return true;
@@ -30,7 +30,7 @@ function handleAddedNodes(nodes) {
       node.clientHeight != 0
     ) {
       console.log(reportButton);
-      document.querySelector(".YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper").appendChild(reportButton);
+      setTimeout(() => document.querySelector(".YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper").appendChild(reportButton), 500);
     }
   });
 }
