@@ -5,12 +5,14 @@ function newTagElement() {
   return elm;
 }
 
-const reportButton = document.createElement("button");
-reportButton.classList.add("clickbait-btn");
-reportButton.textContent = "Report";
+let popupElement, reportButton;
 
 function checkClickbait(videoId) {
   return true;
+}
+
+function onReport() {
+  popupElement.style.display = "block";
 }
 
 function handleAddedNodes(nodes) {
@@ -29,8 +31,15 @@ function handleAddedNodes(nodes) {
       node.tagName.toLowerCase() == "like-button-view-model" &&
       node.clientHeight != 0
     ) {
-      console.log(reportButton);
-      setTimeout(() => document.querySelector(".YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper").appendChild(reportButton), 500);
+      setTimeout(
+        () =>
+          document
+            .querySelector(
+              ".YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper"
+            )
+            .appendChild(reportButton),
+        500
+      );
     }
   });
 }
@@ -56,6 +65,16 @@ function waitForContentLoad() {
 
 async function init() {
   const targetNode = await waitForContentLoad();
+  
+  reportButton = document.createElement("button");
+  reportButton.classList.add("clickbait-btn");
+  reportButton.textContent = "Report";
+  reportButton.addEventListener("click", onReport);
+
+  popupElement = document.createElement("div");
+  popupElement.classList.add("clickbait-popup");
+  targetNode.appendChild(popupElement);
+
   observer.observe(targetNode, { childList: true, subtree: true });
 }
 
