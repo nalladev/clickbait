@@ -10,20 +10,24 @@
 }
 
 .clickbait-btn {
-  padding: 0px 16px;
-  margin-left: 8px;
+  padding: 5px 16px;
   color: #f1f1f1;
-  background-color: rgba(255,255,255,0.1);
+  background-color: black;
+  opacity: 0.8;
   border: none;
-  border-radius: 20px;
+  border-radius: 0px 0px 0px 10px;
   font-size: 14px;
-  font-family: "Roboto","Arial",sans-serif;
+  font-family: "Roboto", "Arial", sans-serif;
   transition: 0.05s;
+  position: absolute;
+  z-index: 1000;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
 }
 
 .clickbait-btn:hover {
-  background-color: rgba(255,255,255,0.2);
-  cursor: pointer;
+  opacity: 0.7;
 }
 
 .clickbait-popup {

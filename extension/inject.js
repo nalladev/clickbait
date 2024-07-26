@@ -1,18 +1,14 @@
-function newTagElement() {
-  const elm = document.createElement("span");
-  elm.classList.add("clickbait");
-  elm.textContent = "Clickbait";
-  return elm;
-}
-
 let popupElement, reportButton;
 
 function checkClickbait(videoId) {
   return true;
 }
 
-function onReport() {
-  popupElement.style.display = "block";
+function newTagElement() {
+  const elm = document.createElement("span");
+  elm.classList.add("clickbait");
+  elm.textContent = "Clickbait";
+  return elm;
 }
 
 function handleAddedNodes(nodes) {
@@ -23,23 +19,16 @@ function handleAddedNodes(nodes) {
       (node.href.includes("/watch?v=") || node.href.includes("/shorts/")) &&
       node.classList.contains("ytd-thumbnail")
     ) {
+      // detects all video thumbnail elemnts
       const videoId = node.href.match(/.+\/(?:watch\?v=)?(.+)/)[1];
       const isClickbait = checkClickbait(videoId);
       if (isClickbait) node.parentNode.appendChild(newTagElement());
     } else if (
       window.location.pathname == "/watch" &&
-      node.tagName.toLowerCase() == "like-button-view-model" &&
-      node.clientHeight != 0
+      node.id.toLowerCase() == "movie_player"
     ) {
-      setTimeout(
-        () =>
-          document
-            .querySelector(
-              ".YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper"
-            )
-            .appendChild(reportButton),
-        500
-      );
+      // detects the element in which button is to be inserted
+      document.getElementById("movie_player").appendChild(reportButton);
     }
   });
 }
@@ -65,11 +54,13 @@ function waitForContentLoad() {
 
 async function init() {
   const targetNode = await waitForContentLoad();
-  
+
   reportButton = document.createElement("button");
   reportButton.classList.add("clickbait-btn");
   reportButton.textContent = "Report";
-  reportButton.addEventListener("click", onReport);
+  reportButton.addEventListener("click", () => {
+    popupElement.style.display = "block";
+  });
 
   popupElement = document.createElement("div");
   popupElement.classList.add("clickbait-popup");
