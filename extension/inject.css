@@ -21,14 +21,14 @@
   background-color: black;
   opacity: 0.8;
   border: none;
-  border-radius: 0px 0px 0px 10px;
+  border-radius: 0px 0px 10px 0px;
   font-size: 14px;
   font-family: "Roboto", "Arial", sans-serif;
   transition: 0.05s;
   position: absolute;
   z-index: 1000;
   top: 0px;
-  right: 0px;
+  left: 0px;
   cursor: pointer;
 }
 

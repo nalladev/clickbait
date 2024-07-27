@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
   "name": "Clickbait",
-  "description": "Tagging clickbait videos with community feedback",
-  "version": "1",
+  "version": "1.0",
+  "description": "Tagging spam or misleading videos with community feedback",
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/*"],
+      "matches": ["*://www.youtube.com/*"],
       "js": ["inject.js"],
       "css": ["inject.css"],
       "run_at": "document_start"
