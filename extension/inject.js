@@ -5,7 +5,7 @@ reportButton.textContent = "Report";
 let newVideos = [];
 let waitAndFetchTimeout;
 
-const dev = true;
+const dev = false;
 const url = dev
   ? "http://127.0.0.1:4000/reports/"
   : "https://clickbaitapi.onrender.com/reports/";
