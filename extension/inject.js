@@ -6,13 +6,13 @@ let newVideos = [];
 let waitAndFetchTimeout;
 
 const dev = false;
-const url = dev
+const fetchUrl = dev
   ? "http://127.0.0.1:4000/reports/"
   : "https://clickbaitapi.onrender.com/reports/";
 
 async function fetchReports() {
   try {
-    const response = await fetch(url, {
+    const response = await fetch(fetchUrl, {
       method: "POST",
       body: JSON.stringify({ videoIds: newVideos.map((item) => item.videoId) }),
       headers: {
@@ -26,7 +26,12 @@ async function fetchReports() {
 }
 
 async function reportVideo(videoId) {
-  return true;
+  try {
+    const response = await fetch(fetchUrl + videoId, { method: "POST" });
+    return response.json();
+  } catch (error) {
+    console.error("Error: ", error);
+  }
 }
 
 reportButton.addEventListener("click", async () => {
@@ -39,7 +44,6 @@ reportButton.addEventListener("click", async () => {
 function newTagElement() {
   const element = document.createElement("span");
   element.classList.add("clickbait");
-  element.textContent = "Clickbait";
   return element;
 }
 
@@ -47,10 +51,12 @@ async function fetchAndTAg() {
   const reports = await fetchReports();
   reports.forEach((report) => {
     const newVideosItem = newVideos.find((item) => item.videoId == report.id);
-    if (report.count == 0) {
-      newVideosItem.node.parentNode.appendChild(newTagElement());
-    }
+    const newElement = newTagElement();
+    newVideosItem.node.parentNode.appendChild(newElement);
+    if (report.count == 1) newElement.textContent = "Misleading/Spam";
+    else newElement.textContent = "Misleading/Spam " + report.count;
   });
+  newVideos = [];
 }
 
 function getVideoId(href) {
@@ -74,7 +80,7 @@ const thumbnailObserver = new MutationObserver((mutationsList) => {
         newVideos.push({ videoId, node });
 
         if (waitAndFetchTimeout) clearTimeout(waitAndFetchTimeout);
-        waitAndFetchTimeout = setTimeout(fetchAndTAg(), 500);
+        waitAndFetchTimeout = setTimeout(fetchAndTAg, 300);
       }
     });
   }
