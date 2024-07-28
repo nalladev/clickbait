@@ -2,8 +2,24 @@ const reportButton = document.createElement("button");
 reportButton.classList.add("clickbait-btn");
 reportButton.textContent = "Report";
 
-async function checkClickbait(videoId) {
-  return true;
+let newVideos = [];
+let waitAndFetchTimeout;
+
+const domain = true ? "clickbaitapi.onrender.com" : "127.0.0.1:4000";
+
+async function fetchReports() {
+  try {
+    const response = await fetch(`https://${domain}/reports/`, {
+      method: "POST",
+      body: JSON.stringify({ videoIds: newVideos.map((item) => item.videoId) }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+    return response.json();
+  } catch (error) {
+    console.error("Error: ", error);
+  }
 }
 
 async function reportVideo(videoId) {
@@ -24,6 +40,16 @@ function newTagElement() {
   return element;
 }
 
+async function fetchAndTAg() {
+  const reports = await fetchReports();
+  reports.forEach((report) => {
+    const newVideosItem = newVideos.find((item) => item.videoId == report.id);
+    if (report.count == 0) {
+      newVideosItem.node.parentNode.appendChild(newTagElement());
+    }
+  });
+}
+
 function getVideoId(href) {
   const url = new URL(href);
   if (url.pathname.includes("/shorts")) {
@@ -42,8 +68,11 @@ const thumbnailObserver = new MutationObserver((mutationsList) => {
       ) {
         // here gets all newly added video thumbnail elements
         const videoId = getVideoId(node.href);
-        const isClickbait = await checkClickbait(videoId);
-        if (isClickbait) node.parentNode.appendChild(newTagElement());
+
+        newVideos.push({ videoId, node });
+        if (waitAndFetchTimeout) clearTimeout(waitAndFetchTimeout);
+
+        waitAndFetchTimeout = setTimeout(fetchAndTAg(), 250);
       }
     });
   }
