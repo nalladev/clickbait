@@ -5,11 +5,14 @@ reportButton.textContent = "Report";
 let newVideos = [];
 let waitAndFetchTimeout;
 
-const domain = true ? "clickbaitapi.onrender.com" : "127.0.0.1:4000";
+const dev = true;
+const url = dev
+  ? "http://127.0.0.1:4000/reports/"
+  : "https://clickbaitapi.onrender.com/reports/";
 
 async function fetchReports() {
   try {
-    const response = await fetch(`https://${domain}/reports/`, {
+    const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify({ videoIds: newVideos.map((item) => item.videoId) }),
       headers: {
@@ -68,11 +71,10 @@ const thumbnailObserver = new MutationObserver((mutationsList) => {
       ) {
         // here gets all newly added video thumbnail elements
         const videoId = getVideoId(node.href);
-
         newVideos.push({ videoId, node });
-        if (waitAndFetchTimeout) clearTimeout(waitAndFetchTimeout);
 
-        waitAndFetchTimeout = setTimeout(fetchAndTAg(), 250);
+        if (waitAndFetchTimeout) clearTimeout(waitAndFetchTimeout);
+        waitAndFetchTimeout = setTimeout(fetchAndTAg(), 500);
       }
     });
   }
