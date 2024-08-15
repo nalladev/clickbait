@@ -8,7 +8,7 @@ let waitAndFetchTimeout;
 const dev = false;
 const fetchUrl = dev
   ? "http://127.0.0.1:4000/reports/"
-  : "https://clickbaitapi.onrender.com/reports/";
+  : "https://clickbaitapi-1xma.onrender.com/reports/";
 
 async function fetchReports() {
   try {
